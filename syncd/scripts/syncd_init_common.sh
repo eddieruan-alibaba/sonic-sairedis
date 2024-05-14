@@ -292,6 +292,11 @@ config_syncd_vs()
     CMD_ARGS+=" -p $HWSKU_DIR/sai.profile"
 }
 
+config_syncd_ciscovs()
+{
+    CMD_ARGS+=" -l -p $HWSKU_DIR/sai.profile"
+}
+
 config_syncd_soda()
 {
     # Add support for SAI bulk operations
@@ -330,6 +335,8 @@ config_syncd()
         config_syncd_nephos
     elif [ "$SONIC_ASIC_TYPE" == "vs" ]; then
         config_syncd_vs
+    elif [ "$SONIC_ASIC_TYPE" == "ciscovs" ]; then
+        config_syncd_ciscovs	
     elif [ "$SONIC_ASIC_TYPE" == "innovium" ]; then
         config_syncd_innovium
     elif [ "$SONIC_ASIC_TYPE" == "soda" ]; then
