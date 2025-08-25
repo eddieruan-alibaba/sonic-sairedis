@@ -61,6 +61,20 @@ SaiDiscovery::~SaiDiscovery()
     // empty
 }
 
+bool is_specal_handling_md(sai_object_type_t ot, sai_attr_metadata_t *md)
+{
+    bool ret = false;
+
+    if (ot == SAI_OBJECT_TYPE_INGRESS_PRIORITY_GROUP && md->attrid ==  SAI_PORT_ATTR_PORT_STAT_EXTENDED ) {
+        ret = true;
+    }
+
+    SWSS_LOG_NOTICE("DEBUGME: %s on %s, ret %d",
+            md->attridname,
+            sai_serialize_object_type(ot).c_str(), (int)ret);
+
+    return ret;
+}
 void SaiDiscovery::discover(
         _In_ sai_object_id_t rid,
         _Inout_ std::set<sai_object_id_t> &discovered)
@@ -142,6 +156,9 @@ void SaiDiscovery::discover(
             continue;
         }
 
+        if (is_specal_handling_md(ot, md)) {
+            continue;
+        }
         if (md->attrvaluetype == SAI_ATTR_VALUE_TYPE_OBJECT_ID)
         {
             if (md->defaultvaluetype == SAI_DEFAULT_VALUE_TYPE_CONST)
